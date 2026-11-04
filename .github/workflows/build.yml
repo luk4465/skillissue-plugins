@@ -1,0 +1,67 @@
+name: build
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            name: windows
+          - os: macos-14
+            name: macos
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure
+        if: runner.os == 'Windows'
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DSI_BUILD_TESTS=ON
+
+      - name: Build (Windows)
+        if: runner.os == 'Windows'
+        run: cmake --build build --config Release --parallel --target SIReverb_VST3 SIRiser_VST3 SIEQ_VST3 SITune_VST3 SI76_VST3 SISaturn_VST3 SIEcho_VST3 SIRack_VST3 SIPitch_VST3 SITests
+
+      - name: Build + installer (macOS, universal VST3 + AU)
+        if: runner.os == 'macOS'
+        run: bash installer/build-mac-pkg.sh
+
+      - name: Upload macOS installer
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: SkillIssue-Plugins-macOS-installer
+          path: dist/*.pkg
+
+      - name: Test
+        if: runner.os == 'Windows'
+        continue-on-error: true
+        shell: bash
+        run: |
+          EXE=$(find build -type f \( -name SITests -o -name SITests.exe \) -perm -u+x 2>/dev/null | head -n1)
+          [ -z "$EXE" ] && EXE=$(find build -name SITests.exe | head -n1)
+          mapfile -t PLUGS < <(find build -maxdepth 5 -type d -name "*.vst3" -path "*Release*")
+          "$EXE" "${PLUGS[@]}"
+
+      - name: Collect
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          mkdir -p dist
+          find build -name '*.vst3' -maxdepth 5 -type d -path '*Release*' -exec cp -R {} dist/ \;
+          find build -name '*.component' -maxdepth 5 -type d -path '*Release*' -exec cp -R {} dist/ \; || true
+          if [ "$RUNNER_OS" = "macOS" ]; then
+            for p in dist/*; do codesign --force --deep -s - "$p"; done
+          fi
+          ls -la dist
+
+      - uses: actions/upload-artifact@v4
+        if: runner.os == 'Windows'
+        with:
+          name: SI-Audio-${{ matrix.name }}
+          path: dist

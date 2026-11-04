@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "name": "SkillIssue — Neon Glass (VST3 UI)",
+    "description": "Plugin UI derived from the dazz_mechanicjob / MechOS phone style: iOS-dark surfaces on a dotted night background, heavy grotesk titles, lime accent only where something acts. Rendered in JUCE (no CSS), so every effect is a 2D vector draw.",
+    "source_references": ["dazz_mechanicjob/web/design-dna.json", "MechOS v2 phone apps (State, Bank, Recents)"],
+    "created_at": "2026-10-19"
+  },
+  "design_system": {
+    "color": {
+      "palette_type": "monochromatic + single accent",
+      "primary": { "hex": "#1c1c1e", "role": "cards / module panels" },
+      "secondary": { "hex": "#2c2c2e", "role": "wells: knob tracks, segmented controls, waveform bed" },
+      "accent": { "hex": "#83c522", "role": "value arcs, active toggles, playhead, CTA" },
+      "accent_hi": { "hex": "#a3e04a", "role": "accent gradient top / glow core" },
+      "neutral": {
+        "scale": ["#f4f5f6", "#c7c9cc", "#8e8e93", "#636366", "#3a3a3c", "#2c2c2e", "#1c1c1e", "#141519", "#0d0e14"],
+        "usage": "#f4f5f6 values and titles, #8e8e93 labels, #636366 hints, #3a3a3c hairlines, darkest = window background"
+      },
+      "semantic": { "success": "#83c522", "warning": "#ff9f0a", "error": "#ff453a", "info": "#2e99a7" },
+      "surface": { "background": "#0d0e14", "card": "#1c1c1e", "elevated": "#2c2c2e" },
+      "contrast_strategy": "light text on layered darks; lime is the only saturated colour on screen"
+    },
+    "typography": {
+      "type_scale": {
+        "display": { "size": "26px", "weight": 900, "tracking": "-0.5px", "use": "plugin name" },
+        "overline": { "size": "10px", "weight": 800, "tracking": "1.6px", "use": "green uppercase section subtitles" },
+        "value": { "size": "13px", "weight": 700, "use": "knob readouts, tabular" },
+        "label": { "size": "10.5px", "weight": 600, "tracking": "0.6px", "use": "knob names, uppercase" }
+      },
+      "font_families": { "heading": "Segoe UI Black / SF Pro Display Heavy (system)", "body": "Segoe UI / SF Pro Text (system)" },
+      "font_style_notes": "UI strings are English and short (Decay, Pre-Delay, Hi Cut)"
+    },
+    "spacing": { "base_unit": "4px", "scale": [4, 8, 12, 16, 20, 24], "content_density": "compact" },
+    "layout": {
+      "grid_system": "header bar + card grid; floating tab bar for pages (Reverb: MAIN / TEMPO / EQ, Riser: SOURCE / SHAPE / FX)",
+      "default_size": "Reverb 860x540, Riser 900x580, resizable 0.75x–1.5x keeping aspect"
+    },
+    "shape": { "border_radius": { "small": "8px", "medium": "14px", "large": "20px", "pill": "999px" }, "border_usage": "1px white 7% + top inner highlight 10%" },
+    "elevation": { "shadow_style": "soft diffused", "levels": { "card": "0 10 24 black 55%", "tabbar": "0 14 36 black 70%" } },
+    "motion": { "easing": "spring-like ease-out", "duration_scale": { "micro": "90ms", "normal": "180ms" }, "philosophy": "values glide (30 Hz repaint), toggles snap" },
+    "components": {
+      "knob": "ring knob: dark well, 270° track, lime value arc with soft glow, centre value text, label below",
+      "toggle": "rounded-square button; on = lime fill + dark text, off = elevated grey",
+      "segmented": "pill-in-pill selector for modes/colors",
+      "combo": "dark pill with chevron, popup in card colour",
+      "readout_table": "grouped list rows like iOS Settings (tempo table)"
+    }
+  },
+  "design_style": {
+    "aesthetic": { "mood": ["nocturnal", "technical", "premium"], "visual_metaphor": "tinted glass over a night garage", "genre": "dark pro-audio" },
+    "visual_language": { "complexity": "moderate", "ornamentation": "subtle accents", "texture_usage": "dot grid background only" },
+    "interaction_feel": { "feedback_style": "brightness lift + lime arc", "hover_behavior": "card +3% white", "microinteraction_density": "low" },
+    "brand_voice_in_ui": { "tone": "short, technical, English", "cta_style": "single verb (Capture, Render, Drag)" }
+  },
+  "visual_effects": {
+    "overview": { "effect_intensity": "subtle-accent", "performance_tier": "lightweight", "primary_technology": "JUCE Graphics 2D" },
+    "background_effects": { "type": "dot-grid", "params": { "spacing": "18px", "dot": "1px", "opacity": "0.06" } },
+    "canvas_drawings": {
+      "enabled": true,
+      "type": "data-visualization",
+      "description": "Reverb: live decay envelope + animated RT60 curve. Riser: rendered waveform with lime gradient fill, shape curve overlay and playhead",
+      "params": { "animation_loop": "30 Hz timer", "color_scheme": "lime on #2c2c2e" }
+    },
+    "glassmorphism_neumorphism": { "enabled": true, "style": "glass without blur", "params": { "border_treatment": "1px white 7% + top highlight" } },
+    "composite_notes": "Glow = accent drawn 3x with growing stroke and falling alpha (no blur filter, cheap in software renderer)."
+  }
+}

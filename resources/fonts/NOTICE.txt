@@ -1,0 +1,2 @@
+Plus Jakarta Sans (Regular, Medium, SemiBold, Bold, ExtraBold) - Copyright 2020 The Plus Jakarta Sans Project Authors.
+Licensed under the SIL Open Font License 1.1 (see OFL-PlusJakartaSans.txt). Used for the SkillIssue plugin UIs.

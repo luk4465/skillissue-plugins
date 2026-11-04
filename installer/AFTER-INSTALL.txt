@@ -1,0 +1,16 @@
+SkillIssue Plugins are installed (VST3, 64-bit).
+
+Plugins folder: C:\Program Files\Common Files\VST3
+
+Ableton Live:
+  1. Options / Settings -> Plug-Ins
+  2. Turn on "Use VST3 Plug-In System Folders"
+  3. Click "Rescan"
+  4. You'll find them in Plug-Ins -> SkillIssue
+
+FL Studio, Studio One, Cubase, Reaper: rescan the plugins, the VST3 folder is picked up automatically.
+
+Your own presets are saved to: Documents\SkillIssue\<plugin> Presets
+SI Riser renders are saved to: Documents\SkillIssue\SI Riser Renders
+
+https://skillissue.site
